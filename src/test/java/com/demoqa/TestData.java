@@ -2,8 +2,6 @@ package com.demoqa;
 
 import com.github.javafaker.Faker;
 
-import java.util.Date;
-
 public class TestData {
 
     static Faker faker = new Faker();

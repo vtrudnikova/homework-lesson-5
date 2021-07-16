@@ -1,16 +1,14 @@
 package pages;
 
-import com.codeborne.selenide.Selenide;
 import components.Calendar;
 
 import java.io.File;
-import java.util.Date;
 
 import static com.codeborne.selenide.Condition.text;
-import static com.codeborne.selenide.Selectors.*;
+import static com.codeborne.selenide.Selectors.byId;
+import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
-import static com.demoqa.TestData.*;
 
 public class RegistrationPage {
     private final static String FORM_TITLE = "Student Registration Form";
@@ -20,11 +18,13 @@ public class RegistrationPage {
         open("/automation-practice-form");
         $(".practice-form-wrapper").shouldHave(text(FORM_TITLE));
     }
-    public RegistrationPage  enterFirstNameAndLastName(String firstName, String lastName) {
+
+    public RegistrationPage enterFirstNameAndLastName(String firstName, String lastName) {
         $("#firstName").setValue(firstName);
         $(byId("lastName")).setValue(lastName);
         return this;
     }
+
     public RegistrationPage enterEmail(String email) {
         $(byId("userEmail")).setValue(email);
         return this;
@@ -78,8 +78,11 @@ public class RegistrationPage {
         $(byId("submit")).click();
         return this;
     }
-    public void fillRegistrationForm(){
-        enterFirstNameAndLastName(firstName,lastName);
+
+    public void fillRegistrationForm(String firstName, String lastName, String emailAddress,
+                                     String gender, String mobilePhone, String day, String month, String year,
+                                     String subject, String hobbies, String path, String address, String state, String city) {
+        enterFirstNameAndLastName(firstName, lastName);
         enterEmail(emailAddress);
         selectGender(gender);
         enterMobilePhone(mobilePhone);
@@ -90,7 +93,6 @@ public class RegistrationPage {
         enterAddress(address);
         selectStateAndCity(state, city);
         pressSubmit();
-
 
 
     }

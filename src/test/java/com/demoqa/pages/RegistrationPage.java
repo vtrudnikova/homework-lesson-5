@@ -1,32 +1,31 @@
-package pages;
+package com.demoqa.pages;
 
-import components.Calendar;
-
-import java.io.File;
+import com.codeborne.selenide.SelenideElement;
+import com.demoqa.components.Calendar;
 
 import static com.codeborne.selenide.Condition.text;
-import static com.codeborne.selenide.Selectors.byId;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
 
 public class RegistrationPage {
-    private final static String FORM_TITLE = "Student Registration Form";
+    private SelenideElement modal = $("[role=dialog]");
     private Calendar calendar = new Calendar();
+
 
     public void openRegistrationPage() {
         open("/automation-practice-form");
-        $(".practice-form-wrapper").shouldHave(text(FORM_TITLE));
+        $(".practice-form-wrapper").shouldHave(text("Student Registration Form"));
     }
 
     public RegistrationPage enterFirstNameAndLastName(String firstName, String lastName) {
         $("#firstName").setValue(firstName);
-        $(byId("lastName")).setValue(lastName);
+        $("#lastName").setValue(lastName);
         return this;
     }
 
     public RegistrationPage enterEmail(String email) {
-        $(byId("userEmail")).setValue(email);
+        $("#userEmail").setValue(email);
         return this;
     }
 
@@ -36,7 +35,7 @@ public class RegistrationPage {
     }
 
     public RegistrationPage enterMobilePhone(String mobilePhone) {
-        $(byId("userNumber")).setValue(mobilePhone);
+        $("#userNumber").setValue(mobilePhone);
         return this;
     }
 
@@ -55,14 +54,13 @@ public class RegistrationPage {
         return this;
     }
 
-    public RegistrationPage uploadPicture() {
-        File file = new File("src/test/resources/test.png");
-        $("#uploadPicture").uploadFile(file);
+    public RegistrationPage uploadPicture(String nameFile) {
+        $("#uploadPicture").uploadFromClasspath(nameFile);
         return this;
     }
 
     public RegistrationPage enterAddress(String address) {
-        $(byId("currentAddress")).setValue(address);
+        $("#currentAddress").setValue(address);
         return this;
     }
 
@@ -75,26 +73,16 @@ public class RegistrationPage {
     }
 
     public RegistrationPage pressSubmit() {
-        $(byId("submit")).click();
+        $("#submit").click();
         return this;
     }
 
-    public void fillRegistrationForm(String firstName, String lastName, String emailAddress,
-                                     String gender, String mobilePhone, String day, String month, String year,
-                                     String subject, String hobbies, String path, String address, String state, String city) {
-        enterFirstNameAndLastName(firstName, lastName);
-        enterEmail(emailAddress);
-        selectGender(gender);
-        enterMobilePhone(mobilePhone);
-        selectDatOfBirth(day, month, year);
-        selectSubject(subject);
-        selectHobbies(hobbies);
-        uploadPicture();
-        enterAddress(address);
-        selectStateAndCity(state, city);
-        pressSubmit();
-
-
+    public void checkResultsTitle() {
+        modal.$(".modal-title").shouldHave(text("Thanks for submitting the form"));
     }
 
+    public RegistrationPage checkForm(String value) {
+        modal.$(".table-responsive").shouldHave(text(value));
+        return this;
+    }
 }
